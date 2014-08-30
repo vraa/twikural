@@ -1,0 +1,86 @@
+@(thirukural: Thirukural)
+
+@kuralNavigation(thirukural: Thirukural) = {
+	<nav>
+		<a class='previous' href='@routes.Application.kural(thirukural.previous())'>முந்தையது</a>
+		<a class='next' href='@routes.Application.kural(thirukural.next())'>அடுத்தது</a>
+	</nav>
+}
+
+<article id="thirukural-@thirukural.id" class="thirukural">
+	<p class="couplet-tamil">
+		<span>
+			@Html(thirukural.tamil)
+		</span>
+	</p>
+	<div class='gad slot-top'>
+		<div class='ad'>
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- twikural-responsive-slot-top -->
+			<ins class="adsbygoogle"
+			     style="display:block"
+			     data-ad-client="ca-pub-4601926589924919"
+			     data-ad-slot="4715424665"
+			     data-ad-format="auto"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+	</div>
+	@kuralNavigation(thirukural)
+	<div class='content'>
+		<ul class='explanation-tamil'>
+			<li>
+				<p class='author'>மு. வரதராசனார்</p>
+				<p class='artham'>@Html(thirukural.muva)</p>
+			</li>
+			<li>
+				<p class='author'>சாலமன் பாப்பையா</p>
+				<p class='artham'>@Html(thirukural.pappaiya)</p>
+			</li>
+			<li>
+				<p class='author'>கலைஞர்</p>
+				<p class='artham'>@Html(thirukural.kalaignar)</p>
+			</li>
+		</ul>
+		<div class='gad slot-middle'>
+			<div class='ad'>
+				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+				<!-- twikural-medrect-slot-middle -->
+				<ins class="adsbygoogle"
+				     style="display:inline-block;width:300px;height:250px"
+				     data-ad-client="ca-pub-4601926589924919"
+				     data-ad-slot="9145624263"></ins>
+				<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+				</script>
+			</div>
+		</div>
+	</div>
+	@kuralNavigation(thirukural)
+	<div class='discuss'>
+		<div class="fb-comments" data-href="http://twikural.veerasundar.com/kural/@thirukural.id" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
+	</div>
+	<div class='gad slot-bottom'>
+		<div class='ad'>
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- twikural-responsive-slot-bottom -->
+			<ins class="adsbygoogle"
+			     style="display:block"
+			     data-ad-client="ca-pub-4601926589924919"
+			     data-ad-slot="7668891063"
+			     data-ad-format="auto"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+	</div>
+	<dl class='couplet-english'>
+		<dt>
+			@Html(thirukural.explanation)
+		</dt>
+		<dd>
+			@Html(thirukural.english)
+		</dd>
+	</dl>
+</article>
