@@ -33,12 +33,12 @@ public class Thirukural extends Model {
 	public static Finder<Long, Thirukural> find = new Finder<>(Long.class,
 			Thirukural.class);
 
-	public Integer previous() {
-		return Long.valueOf(this.id == Thirukural.FIRST ? Thirukural.LAST : this.id - 1).intValue();
+	public String previous() {
+		return String.valueOf(this.id == Thirukural.FIRST ? Thirukural.LAST : this.id - 1);
 	}
 
-	public Integer next() {
-		return Long.valueOf(this.id == Thirukural.LAST ? Thirukural.FIRST : this.id + 1).intValue();
+	public String next() {
+		return String.valueOf(this.id == Thirukural.LAST ? Thirukural.FIRST : this.id + 1);
 	}
 	
 	public String asText(){

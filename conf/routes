@@ -4,7 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET			/kural/:id									controllers.Application.kural(id: Integer)
+GET			/kural/:id									controllers.Application.kural(id)
+GET			/kural											controllers.Application.oldApi(id ?= null)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
