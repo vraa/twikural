@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import controllers.routes;
 import dto.SiteMeta;
 import play.db.ebean.Model;
+import play.mvc.Http.Context;
 
 @Entity
 public class Thirukural extends Model {
@@ -52,7 +53,8 @@ public class Thirukural extends Model {
 	}
 
 	public String url() {
-		return routes.Application.kural(String.valueOf(this.id)).url();
+		return routes.Application.kural(String.valueOf(this.id)).absoluteURL(
+				Context.current().request());
 	}
 
 	public SiteMeta meta() {
@@ -61,8 +63,9 @@ public class Thirukural extends Model {
 		meta.title = this.asText();
 		meta.description = this.muva;
 		meta.url = this.url();
-		meta.image = routes.Assets.at("images/cover") + "/"
-				+ images[new Random().nextInt(images.length)] + ".jpg";
+		meta.image = routes.Assets.at("images/cover").absoluteURL(
+				Context.current().request())
+				+ "/" + images[new Random().nextInt(images.length)] + ".jpg";
 		return meta;
 	}
 
