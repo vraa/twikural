@@ -1,21 +1,50 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import dto.SiteMeta;
 import models.Data;
 import models.Thirukural;
 import play.Logger;
 import play.cache.Cache;
 import play.mvc.Controller;
 import play.mvc.Result;
+import twitter4j.IDs;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import views.html.home;
 import views.html.index;
 
 public class Application extends Controller {
 
+	private static Thirukural getKural(long id) {
+		Thirukural thirukural = (Thirukural) Cache.get("kural-" + id);
+		if (thirukural == null) {
+			thirukural = Thirukural.find.byId(id);
+			Cache.set("kural-" + id, thirukural);
+		}
+		return thirukural;
+	}
+
 	public static Result index() {
+		List<Thirukural> thirukurals = new ArrayList<>();
+
 		Data data = Data.find.byId(1L);
-		return redirect("/kural/" + data.activeKuralId);
+		thirukurals.add(getKural(data.activeKuralId));
+		int j = data.activeKuralId - 1;
+		for (int i = 1; i <= 3; i++) {
+			j = j > 0 ? j : j + 1330;
+			Thirukural thirukural = getKural(Long.valueOf(j));
+			if (thirukural != null) {
+				thirukurals.add(thirukural);
+			}
+			j--;
+		}
+
+		return ok(home.render(new SiteMeta(), thirukurals));
 	}
 
 	public static Result kural(String kid) {
@@ -26,14 +55,10 @@ public class Application extends Controller {
 			Logger.error("Invalid Kural ID [" + kid + "]");
 			id = 0;
 		}
-		if(id == 0){
+		if (id == 0) {
 			return badRequest("Invalid Kural ID");
 		}
-		Thirukural thirukural = (Thirukural) Cache.get("kural-" + id);
-		if (thirukural == null) {
-			thirukural = Thirukural.find.byId(Long.valueOf(id));
-			Cache.set("kural-" + id, thirukural);
-		}
+		Thirukural thirukural = getKural(id);
 		if (thirukural != null) {
 			return ok(index.render(thirukural));
 		} else {
@@ -77,17 +102,40 @@ public class Application extends Controller {
 		return status;
 	}
 
+	private static String mapToPublicContent(Thirukural thirukural) {
+		return thirukural.asText() + " / விளக்கம் காண:  " + thirukural.url();
+	}
+
 	private static boolean publish(Thirukural thirukural) {
 		boolean status = false;
 		Twitter twitter = TwitterFactory.getSingleton();
 		try {
-			twitter.updateStatus(thirukural.asText() + " / விளக்கம் காண:  "
-					+ thirukural.url());
+			twitter.updateStatus(mapToPublicContent(thirukural));
 			status = true;
 			Logger.info("Successfully published to Twitter");
 		} catch (TwitterException e) {
 			status = false;
 			Logger.error("Failed to publish to Twitter[" + e.getMessage() + "]");
+		}
+		if (status) {
+			publishToTwitterFollowers(thirukural);
+		}
+		return status;
+	}
+
+	private static boolean publishToTwitterFollowers(Thirukural thirukural) {
+		boolean status = false;
+		try {
+			Twitter twitter = TwitterFactory.getSingleton();
+			IDs followers = twitter.getFollowersIDs(-1);
+			for (long follower : followers.getIDs()) {
+				twitter.sendDirectMessage(follower,
+						mapToPublicContent(thirukural));
+			}
+			status = true;
+		} catch (TwitterException twe) {
+			Logger.error("Failed to send DMs" + twe.getMessage());
+			status = false;
 		}
 		return status;
 	}
@@ -99,6 +147,11 @@ public class Application extends Controller {
 		} catch (TwitterException te) {
 			Logger.error("Unable to inform admin" + te.getMessage());
 		}
+	}
+
+	public static String theme() {
+		String[] themes = { "navy", "orange", "teal", "maroon" };
+		return themes[new Random().nextInt(themes.length)];
 	}
 
 }

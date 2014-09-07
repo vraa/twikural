@@ -1,4 +1,4 @@
-@(thirukural: Thirukural)(content: Html)
+@(meta: dto.SiteMeta)(content: Html)
 
 <!DOCTYPE html>
 
@@ -6,57 +6,55 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="@thirukural.muva">
-		<title>Twikural : @thirukural.asText()</title>
+		<meta name="description" content="@meta.description">
+		<title>@meta.title</title>
 		
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		
-		<meta property="og:title" content="@thirukural.asText()" />
+		<meta property="og:title" content="@meta.title" />
+		<meta property="og:url" content="@meta.url" />
+		<meta property="og:description" content="@meta.description" />
+		<meta property="og:image" content="@meta.image" />
 		<meta property="og:site_name" content="Twikural" />
-		<meta property="og:url" content="@thirukural.url()" />
-		<meta property="og:description" content="@thirukural.muva" />
-		<meta property="og:image" content="http://twikural.veerasundar.com/assets/images/valluvar-fb.png" />
 		<meta property="fb:app_id" content="849000108444865"/>
+		
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:site" content="@@twikural"/>
+		<meta name="twitter:site:id" content="479664465"/>
+		<meta name="twitter:creator" content="@@vraa"/>
+		<meta name="twitter:creator:id" content="8643632"/>
+		<meta name="twitter:description" content="@meta.description"/>
+		<meta name="twitter:title" content="@meta.title"/>
+		<meta name="twitter:image:src" content="@meta.image"/>
 		
 	</head>
 		<body>
-			
-			@content
-			
-			
-			
-			<div id="fb-root"></div>
-			<script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '849000108444865',
-          xfbml      : true,
-          version    : 'v2.0'
-        });
-        console && console.log('Inited FB');
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    	</script>
-			
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-			
-			<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		
-		  ga('create', 'UA-2028306-36', 'auto');
-		  ga('send', 'pageview');
-		</script>
+			<article class='twikural'>
+				<header>
+					<div class='brand'>
+						<a href="/">
+							<img class='logo' src="@routes.Assets.at("images/thiruvalluvar.png")" alt="Thiruvalluvar" title="Twikural" />
+						</a>
+						<h1>twikural</h1>
+						<p class='tagline'>தினமிரு திருக்குறள்!</p>
+					</div>
+					<div class='follow'>
+						<div class="fb-like" data-href="https://www.facebook.com/twikural"
+							data-width="300" data-layout="standard" data-action="like"
+							data-show-faces="true" data-share="false"></div>
+					</div>
+				</header>
 			
+				@content
+			
+				<footer>
+				Developed by Veera. <a href="mailto:veera.k.sundar@@gmail.com">Contact</a>
+			</footer>
+		</article>
+			
+		@_social()
+						
 		</body>
 </html>

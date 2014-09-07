@@ -1,24 +1,7 @@
-@(thirukural: Thirukural) 
+@(thirukural: Thirukural)
 
-@main(thirukural) {
-	<article class='twikural'>
-		<header>
-			<div class='brand'>
-				<img class='logo' src="@routes.Assets.at("images/thiruvalluvar.png")" alt="Thiruvalluvar" title="Twikural" />
-				<h1>Twikural</h1>
-				<p class='tagline'>தினமிரு திருக்குறள்!</p>
-			</div>
-			<div class='follow'>
-				<div class="fb-like" data-href="https://www.facebook.com/twikural"
-					data-width="300" data-layout="standard" data-action="like"
-					data-show-faces="true" data-share="false"></div>
-			</div>
-	</header>
+@main(thirukural.meta()) {
 	
 		@views.html.thirukural(thirukural)
-	
-		<footer>
-			Developed by Veera. <a href="mailto:veera.k.sundar@@gmail.com">Contact</a>
-		</footer>
-	</article>
+		
 }
