@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import dto.SiteMeta;
 import models.Data;
 import models.Thirukural;
 import play.Logger;
@@ -17,6 +16,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import views.html.home;
 import views.html.index;
+import dto.SiteMeta;
 
 public class Application extends Controller {
 
@@ -83,20 +83,23 @@ public class Application extends Controller {
 	}
 
 	public static boolean roll() {
-		Logger.info("Rolling over to next thirukural");
 		boolean status = false;
 		Data data = Data.find.byId(1L);
 		Long nextKural = data.activeKuralId == Thirukural.LAST ? 1L
 				: data.activeKuralId + 1;
-		Thirukural thirukural = Thirukural.find.byId(Long.valueOf(nextKural));
+		Logger.info("Rolling over to next thirukural [" + nextKural + "]");
+		Thirukural thirukural = getKural(nextKural);
 		if (publish(thirukural)) {
 			data.activeKuralId = nextKural.intValue();
 			data.save();
-			Logger.info("Successfully rolled over to next thirukural");
+			Logger.info("Successfully rolled over to next thirukural ["
+					+ nextKural + "]");
 			status = true;
 		} else {
-			Logger.error("Failed to roll over to next thirukural");
-			informAdmin("Failed to roll over to next thirukural");
+			String message = "Failed to roll over to next thirukural ["
+					+ nextKural + "]";
+			Logger.error(message);
+			informAdmin(message);
 			status = false;
 		}
 		return status;
@@ -107,15 +110,17 @@ public class Application extends Controller {
 	}
 
 	private static boolean publish(Thirukural thirukural) {
+		Logger.info("Going to publish kural [" + thirukural.id + "]");
 		boolean status = false;
 		Twitter twitter = TwitterFactory.getSingleton();
 		try {
 			twitter.updateStatus(mapToPublicContent(thirukural));
 			status = true;
-			Logger.info("Successfully published to Twitter");
+			Logger.info("Successfully published to Twitter [" + thirukural.id
+					+ "]");
 		} catch (TwitterException e) {
 			status = false;
-			Logger.error("Failed to publish to Twitter[" + e.getMessage() + "]");
+			Logger.error("Failed to publish to Twitter[" + thirukural.id + "]");
 		}
 		if (status) {
 			publishToTwitterFollowers(thirukural);
@@ -124,19 +129,31 @@ public class Application extends Controller {
 	}
 
 	private static boolean publishToTwitterFollowers(Thirukural thirukural) {
+		Logger.info("Going to send DMs for [" + thirukural.id + "]");
 		boolean status = false;
+		Twitter twitter = TwitterFactory.getSingleton();
+		IDs followers = null;
 		try {
-			Twitter twitter = TwitterFactory.getSingleton();
-			IDs followers = twitter.getFollowersIDs(-1);
-			for (long follower : followers.getIDs()) {
-				twitter.sendDirectMessage(follower,
-						mapToPublicContent(thirukural));
-			}
-			status = true;
+			followers = twitter.getFollowersIDs(-1);
 		} catch (TwitterException twe) {
-			Logger.error("Failed to send DMs" + twe.getMessage());
+			Logger.error("Failed to get followers list [" + thirukural.id + "]");
 			status = false;
 		}
+		if (followers != null) {
+			Logger.info("Sending kural [" + thirukural.id + "] to "
+					+ followers.getIDs().length + " followers.");
+			for (long follower : followers.getIDs()) {
+				try {
+					twitter.sendDirectMessage(follower,
+							mapToPublicContent(thirukural));
+				} catch (TwitterException e) {
+					Logger.error("Failed sending kural [" + thirukural.id
+							+ "] to [" + follower + "]");
+				}
+			}
+			status = true;
+		}
+
 		return status;
 	}
 
