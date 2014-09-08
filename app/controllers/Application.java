@@ -52,7 +52,7 @@ public class Application extends Controller {
 		try {
 			id = Integer.valueOf(kid);
 		} catch (NumberFormatException nfe) {
-			Logger.error("Invalid Kural ID [" + kid + "]");
+			Logger.info("Invalid Kural ID [" + kid + "]");
 			id = 0;
 		}
 		if (id == 0) {
@@ -81,6 +81,12 @@ public class Application extends Controller {
 		roll();
 		Logger.info("Successfully called triggered task");
 	}
+	
+	public static Result manualRoll(){
+		Logger.info("Manually rolling.");
+		roll();
+		return ok("Manually rolled");
+	}
 
 	public static boolean roll() {
 		boolean status = false;
@@ -98,7 +104,7 @@ public class Application extends Controller {
 		} else {
 			String message = "Failed to roll over to next thirukural ["
 					+ nextKural + "]";
-			Logger.error(message);
+			Logger.info(message);
 			informAdmin(message);
 			status = false;
 		}
@@ -120,7 +126,7 @@ public class Application extends Controller {
 					+ "]");
 		} catch (TwitterException e) {
 			status = false;
-			Logger.error("Failed to publish to Twitter[" + thirukural.id + "]");
+			Logger.info("Failed to publish to Twitter[" + thirukural.id + "]");
 		}
 		if (status) {
 			publishToTwitterFollowers(thirukural);
@@ -136,7 +142,7 @@ public class Application extends Controller {
 		try {
 			followers = twitter.getFollowersIDs(-1);
 		} catch (TwitterException twe) {
-			Logger.error("Failed to get followers list [" + thirukural.id + "]");
+			Logger.info("Failed to get followers list [" + thirukural.id + "]");
 			status = false;
 		}
 		if (followers != null) {
@@ -147,7 +153,7 @@ public class Application extends Controller {
 					twitter.sendDirectMessage(follower,
 							mapToPublicContent(thirukural));
 				} catch (TwitterException e) {
-					Logger.error("Failed sending kural [" + thirukural.id
+					Logger.info("Failed sending kural [" + thirukural.id
 							+ "] to [" + follower + "]");
 				}
 			}
@@ -162,7 +168,7 @@ public class Application extends Controller {
 		try {
 			twitter.sendDirectMessage(8643632, message);
 		} catch (TwitterException te) {
-			Logger.error("Unable to inform admin" + te.getMessage());
+			Logger.info("Unable to inform admin" + te.getMessage());
 		}
 	}
 
