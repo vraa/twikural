@@ -70,7 +70,7 @@ public class Thirukural extends Model {
 	}
 
 	private String baseURL() {
-		String base = "http://twikural.veerasundar.com/";
+		String base = "http://twikural.veerasundar.com";
 		try {
 			Request req = Context.current().request();
 			if(req!=null){
