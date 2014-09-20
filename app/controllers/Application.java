@@ -129,6 +129,9 @@ public class Application extends Controller {
 			Logger.info("Failed to publish to Twitter[" + thirukural.id + "]");
 			Logger.info(e.getErrorMessage());
 		}
+		if(status){
+			publishToTwitterFollowers(thirukural);
+		}
 		return status;
 	}
 
