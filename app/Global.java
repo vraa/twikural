@@ -3,7 +3,6 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-import akka.actor.Cancellable;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -11,6 +10,7 @@ import play.libs.Akka;
 import play.libs.Time.CronExpression;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
+import akka.actor.Cancellable;
 
 public class Global extends GlobalSettings {
 
@@ -19,6 +19,7 @@ public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
 		scheduleJobs();
+		triggeredOnStart();
 	}
 
 	public void onStop(Application app) {
@@ -39,6 +40,21 @@ public class Global extends GlobalSettings {
 			eveningJob.cancel();
 			Logger.info("Canceled evening job");
 		}
+	}
+	
+	private void triggeredOnStart(){
+		Logger.debug("Scheduling debug trigger on application start");;
+		Akka.system().scheduler().scheduleOnce(
+		        Duration.create(60, TimeUnit.SECONDS),
+		        new Runnable() {
+		            public void run() {
+		            	Logger.debug("Trigged on start debug job");
+		                controllers.Application.trigger();
+		                Logger.debug("Completed on start debug job");
+		            }
+		        },
+		        Akka.system().dispatcher()
+		);
 	}
 
 	private void scheduleMorningJob() {
