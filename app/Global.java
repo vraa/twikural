@@ -19,7 +19,6 @@ public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
 		scheduleJobs();
-		triggeredOnStart();
 	}
 
 	public void onStop(Application app) {
