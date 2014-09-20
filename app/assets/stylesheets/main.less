@@ -1,6 +1,7 @@
-*{
-	box-sizing:border-box;
+* {
+	box-sizing: border-box;
 }
+
 html , body {
 	border: 0;
 	font-family: "Helvetica-Neue", "Helvetica", Arial, sans-serif;
@@ -43,9 +44,14 @@ a img {
 }
 
 @pad: 10px;
+@base-color: #001F3F;
+@light-base-color: lighten(@base-color, 10%);
+@lighter-base-color: lighten(@base-color, 50%);
+@line-color: darken(@base-color, 10%);
+@contrast-bg-color: contrast(@base-color);
 body {
-	background-color:#fff;
-	color: #333;
+	background-color: @base-color;
+	color: #fff;
 }
 
 .twikural {
@@ -54,46 +60,69 @@ body {
 
 header {
 	margin: @pad 0;
-	overflow:hidden;
-	position:relative;
-	
+	overflow: hidden;
+	position: relative;
 	h1 {
 		font-size: 2rem;
+		color: @lighter-base-color;
 	}
 
 	.logo {
 		width: 50px;
 		height: auto;
+		float: left;
+		margin: 0 2 * @pad;
 	}
 
 	.tagline {
 		font-size: .8rem;
 		line-height: 2rem;
+		color: @lighter-base-color;
 	}
-	
-	.brand{
-		text-align:center;
-		width:100%;
+
+	.brand {
+		width: 100%;
+		a {
+			text-decoration: none;
+		}
 	}
-	
-	.follow{
-		width:100%;
+
+	.follow {
+		width: 100%;
 		padding: @pad;
-		text-align:center;
-		background-color:#fff;
+		text-align: center;
 	}
 }
 
+.hero-kural {
+	box-shadow: 0 0 100px @line-color;
+	padding: 2 * @pad @pad;
+	text-align: center;
+	color: @lighter-base-color;
+	border: 1px solid @line-color;
+	background-color: @light-base-color;
+	border-radius: @pad;
+}
+
+.button-style {
+	background-color: @line-color;
+	padding: 0 @pad;
+	border: 1px solid @line-color;
+	border-radius: 3px;
+	font-size: .8rem;
+	text-decoration: none;
+	color: @lighter-base-color;
+}
+
 article.thirukural {
-	position:relative;
+	position: relative;
 	margin: 0 auto;
 	font-size: .8rem;
 	.couplet-tamil {
-		padding: 2 * @pad @pad;
-		text-align:center;
-		span{
-			display:inline-block;
-			text-align:left;
+		.hero-kural;
+		span {
+			display: inline-block;
+			text-align: left;
 		}
 	}
 
@@ -103,295 +132,286 @@ article.thirukural {
 		list-style: none;
 		li {
 			margin: @pad 0;
-			&:last-child{
-				margin-bottom:2*@pad;
+			&:last-child {
+				margin-bottom: 2 * @pad;
 			}
+
 			padding: @pad 2 * @pad;
 			.author {
 				font-size: .9rem;
 				margin-bottom: @pad;
+				color: @lighter-base-color;
+				text-shadow: 0 0 2px @base-color;
 				&:after {
 					content: ':';
 				}
 			}
+
+			.artham {
+				color: @lighter-base-color;
+			}
 		}
 	}
-	.gad{
-		margin:@pad/2 -(2*@pad);
-		text-align:center;
-		line-height:0;
-		&.slot-middle{
-			margin:@pad -(2*@pad);
+
+	.gad {
+		margin: @pad / 2 -(2 * @pad);
+		text-align: center;
+		line-height: 0;
+		&.slot-middle {
+			margin: @pad -(2 * @pad);
 		}
 	}
-	.couplet-english{
-		dt{
-			padding:@pad;
+
+	.couplet-english {
+		position: absolute;
+		left: -9999px;
+		dt {
+			padding: @pad;
 		}
-		dd{
-			padding:@pad 2*@pad;
+
+		dd {
+			padding: @pad 2 * @pad;
 		}
 	}
-	nav{
+
+	nav {
 		padding: @pad 0;
-		overflow:hidden;
-		a{
-			background-color:#ddd;
-			padding:0 @pad;
-			border:1px solid #ccc;
-			border-radius:3px;
-			font-size:.8rem;
-			text-decoration:none;
-			color:#000;
-			&.previous{
-				float:left;
-				margin-left:@pad;
-				&:before{
-					content:'«';
-					font-size:1.2rem;
-					font-weight:bold;
-					margin-right:@pad;
+		overflow: hidden;
+		a {
+			.button-style;
+			&.previous {
+				float: left;
+				margin-left: @pad;
+				&:before {
+					content: '«';
+					font-size: 1.2rem;
+					font-weight: bold;
+					margin-right: @pad;
 				}
 			}
-			&.next{
-				float:right;
-				margin-right:@pad;
-				&:after{
-					content:'»';
-					font-size:1.2rem;
-					font-weight:bold;
-					margin-left:@pad;
+
+			&.next {
+				float: right;
+				margin-right: @pad;
+				&:after {
+					content: '»';
+					font-size: 1.2rem;
+					font-weight: bold;
+					margin-left: @pad;
 				}
 			}
 		}
 	}
-	.share{
-		list-style:none;
-		margin:3*@pad 0 0 0;
-		text-align:center;
-		overflow:hidden;
-		li{
-			display:block;
-			&.channel-fb{
-				float:left;
-				margin-left:2*@pad;
+
+	.share {
+		display: none;
+		list-style: none;
+		margin: 3 * @pad 0 0 0;
+		text-align: center;
+		overflow: hidden;
+		width: 100%;
+		li {
+			display: inline-block;
+			&.channel-fb {
+				margin-left: 2 * @pad;
 			}
-			&.channel-twitter{
-				float:right;
+
+			&.channel-twitter {
 			}
 		}
 	}
-	.discuss{
-		background-color:#fff;
-	}
-	
-	&.theme-navy{
-		.couplet-tamil{
-			background-color:#001F3F;
-			color:#fff;
-		}
-	}
-	&.theme-maroon{
-		.couplet-tamil{
-			background-color:#85144B;
-			color:#fff;
-		}
-	}
-	&.theme-orange{
-		.couplet-tamil{
-			background-color:#FF851B;
-			color:#fff;
-		}
-	}
-	&.theme-teal{
-		.couplet-tamil{
-			background-color:#39CCCC;
-			color:#fff;
-		}
+
+	.discuss {
+		background-color: #fff;
 	}
 }
 
-footer{
-	margin:@pad 0;
-	font-size:.8rem;
-	padding:@pad;
-	
-	a{
-		color:#fff;
+footer {
+	margin: @pad 0;
+	font-size: .8rem;
+	padding: @pad;
+	color: @light-base-color;
+	a {
+		color: @light-base-color;
 	}
 }
 
-.home{
-	.thirukurals{
-		list-style:none;
-		padding:0;
-		margin:0;
-		font-size:.9rem;
-		text-align:center;
-		a{
-			text-decoration:none;
+.home {
+	.thirukurals {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: .9rem;
+		text-align: center;
+		a {
+			text-decoration: none;
 		}
-		a.explain-link{
-			display:inline-block;
-			margin:2*@pad 0 0 0;
-			padding:0 @pad;
-			border-radius:3px;
-			&:hover{
-				background-color:#FFDC00;
+
+		a.explain-link {
+			display: inline-block;
+			.button-style;
+			&:hover {
+				background-color: #FFDC00;
 			}
-			&:after{
-					content:'»';
-					font-size:1.2rem;
-					font-weight:bold;
-					margin-left:@pad;
-				}
-		}
-		li:first-child{
-			background-color:#39CCCC;
-			color:#fff;
-			a{
-				color:#fff;
-			}
-			a.explain-link{
-				background-color:#fff;
-				color:#666;
-				&:hover{
-					background-color:#FFDC00;
-				}
+
+			&:after {
+				content: '»';
+				font-size: 1.2rem;
+				font-weight: bold;
+				margin-left: @pad;
 			}
 		}
-		li{
-			padding:2*@pad @pad/2;
-			p{
-				text-align:left;
+
+		li:first-child {
+			.hero-kural;
+			text-align: left;
+			a {
+				color: @lighter-base-color;
 			}
-			a{
-				color:#333;
+		}
+
+		li {
+			padding: 2 * @pad @pad / 2;
+			float: none;
+			display: block;
+			width: 100%;
+			text-align: left;
+			p {
+				text-align: left;
 			}
-			a.explain-link{
-				background-color:#39CCCC;
-				color:#fff;
+
+			a {
+				color: @lighter-base-color;
+			}
+
+			a.explain-link {
+				.button-style;
+				margin-top:@pad;
 			}
 		}
 	}
 }
 
-@media(min-width: 728px){
-	
-	.home{
-		.thirukurals{
-			position:relative;
-			text-align:left;
-			li{
+@media (min-width: 600px) {
+	.home {
+		.thirukurals {
+			position: relative;
+			text-align: left;
+			li {
 				width:50%;
-				&:first-child{
-					display:block;
-					width:100%;
-					height:auto;
-					padding:2*@pad 3*@pad;
-					p{
-						margin-right:4*@pad;
-						font-size:1.6rem;
+				&:first-child {
+					display: block;
+					width: 100%;
+					height: auto;
+					padding: 2 * @pad 3 * @pad;
+					p {
+						margin-right: 4 * @pad;
+						font-size: 1.6rem;
 					}
 				}
-				&.gad{
-					position:absolute;
-					bottom:0;
-					right:0;
+
+				&.intro {
+					position: absolute;
+					bottom: 0;
+					right: 0;
+					font-size:.8rem;
+					color:@lighter-base-color;
+					text-align:center;
+					p{
+						margin-bottom:@pad;
+						text-align:center;
+					}
 				}
 			}
 		}
 	}
-	
-	header{
-		overflow:hidden;
-		position:relative;
-		.logo{
-			float:left;
-			margin-right:2 * @pad;
-			max-height:75px;
-			width:auto;
+
+	header {
+		overflow: hidden;
+		position: relative;
+		.logo {
+			float: left;
+			margin-right: 2 * @pad;
+			max-height: 75px;
+			width: auto;
 		}
-		.brand{
-			text-align:left;
-			width:50%;
+
+		.brand {
+			text-align: left;
+			width: 50%;
 		}
-		.follow{
-			position:absolute;
-			top:0;
-			right:0;
-			width:50%;
-			height:100%;
-			background:rgba(255,255,255,1);
-			border-radius:20px 0;
-			border:1px solid #fff;
-			margin:0;
-			.fb-like{
-				position:absolute;
-				top:50%;
-				left:50%;
-				-moz-transform:translateX(-50%) translateY(-50%);
-				-webkit-transform:translateX(-50%) translateY(-50%);
-				transform:translateX(-50%) translateY(-50%);
+
+		.follow {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 50%;
+			height: 100%;
+			margin: 0;
+			.fb-like {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				-moz-transform: translateX(-50%) translateY(-50%);
+				-webkit-transform: translateX(-50%) translateY(-50%);
+				transform: translateX(-50%) translateY(-50%);
 			}
 		}
 	}
-	
-	.twikural{
-		width:728px;
-		margin:0 auto;
+
+	.twikural {
+		width: 960px;
+		margin: 0 auto;
 	}
-	
-	article.thirukural{
-		
-		.couplet-tamil{
-			font-size:1.6rem;
-			padding:4*@pad 0;
+
+	article.thirukural {
+		.couplet-tamil {
+			font-size: 1.6rem;
+			padding: 4 * @pad 0;
+			line-height: 3rem;
 		}
-		
-		[class*='ear-ad-']{
-			position:absolute;
-			display:block;
+
+		[class *= 'ear-ad-'] {
+			position: absolute;
+			display: block;
 		}
-		.gad{
-			margin:@pad/2 0;
-			padding:0;
-			line-height:0;
-		}		
-		.content{
-			overflow:hidden;
-			position:relative;
-			.explanation-tamil{
-				float:left;
-				width:50%;
-			}
-			.gad{
-				position:absolute;
-				width:50%;
-				margin:0;
-				top:0;
-				right:0;
-				height:100%;
-				
-				.ad{
-					position:relative;
-					top:50%;
-					-moz-transform:translateY(-50%);
-					-webkit-transform:translateY(-50%);
-					transform:translateY(-50%);
+
+		.gad {
+			margin: @pad / 2 0;
+			padding: 0;
+			line-height: 0;
+		}
+
+		.content {
+			overflow: hidden;
+			position: relative;
+			.explanation-tamil {
+				li {
+					float: left;
+					width: 33%;
+					.author {
+						font-size: 1.3rem;
+						line-height: 2rem;
+					}
+
+					.artham {
+						font-size: 1rem;
+						line-height: 2rem;
+					}
 				}
 			}
 		}
-		.share{
-			width:50%;
-			margin-right:auto;
-			margin-left:auto;
-			
-			li.channel-fb{
-				.fb-share-button > span:first-child{
-					vertical-align:baseline!important;
+
+		.share {
+			width: 50%;
+			margin-right: auto;
+			margin-left: auto;
+			li.channel-fb {
+				.fb-share-button > span:first-child {
+					vertical-align: baseline ! important;
 				}
 			}
 		}
 	}
 }
+

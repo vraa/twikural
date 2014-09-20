@@ -171,8 +171,8 @@ public class Application extends Controller {
 	}
 
 	public static String theme() {
-		String[] themes = { "navy", "orange", "teal", "maroon" };
-		return themes[new Random().nextInt(themes.length)];
+		//String[] themes = { "navy", "orange", "teal", "maroon" };
+		return "teal";
 	}
 
 }

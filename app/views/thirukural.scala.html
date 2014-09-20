@@ -4,24 +4,24 @@
 	<nav>
 		<a class='previous' href='@routes.Application.kural(thirukural.previous())'>முந்தையது</a>
 		<a class='next' href='@routes.Application.kural(thirukural.next())'>அடுத்தது</a>
+		<ul class='share'>
+			<li class='channel-fb'>
+				<div class="fb-share-button" data-type="button_count" data-href="@thirukural.url()"></div>
+			</li>
+			<li class='channel-twitter'>
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="@thirukural.url()" data-via="twikural">Tweet</a>
+			</li>
+		</ul>
 	</nav>
 }
 
-<article id="thirukural-@thirukural.id" class="thirukural theme-@controllers.Application.theme()">
+<article id="thirukural-@thirukural.id" class="thirukural">
+	@kuralNavigation(thirukural)
 	<div class="couplet-tamil">
 		<span>
 			@Html(thirukural.tamil)
 		</span>
 	</div>
-	<ul class='share'>
-		<li class='channel-fb'>
-			<div class="fb-share-button" data-type="button_count" data-href="@thirukural.url()"></div>
-		</li>
-		<li class='channel-twitter'>
-			<a href="https://twitter.com/share" class="twitter-share-button" data-url="@thirukural.url()" data-via="twikural">Tweet</a>
-		</li>
-	</ul>
-	@kuralNavigation(thirukural)
 	<div class='content'>
 		<ul class='explanation-tamil'>
 			<li>
@@ -40,7 +40,6 @@
 		<div class='gad slot-middle'>
 		</div>
 	</div>
-	@kuralNavigation(thirukural)
 	<dl class='couplet-english'>
 		<dt>
 			@Html(thirukural.explanation)
@@ -49,7 +48,4 @@
 			@Html(thirukural.english)
 		</dd>
 	</dl>
-	<div class='discuss'>
-		<div class="fb-comments" data-href="http://twikural.veerasundar.com/kural/@thirukural.id" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
-	</div>
 </article>
